@@ -1,14 +1,6 @@
 [
-    {
-        "type": "book",
-        "link": "family guy epic moments"
-    },
-    {
-        "type": "hiii",
-        "link": "music character"
-    },
-    {
-        "type": "eee",
-        "link": "aaa"
-    }
+  {
+    "type": "book",
+    "link": "https://www.amazon.com/El-Greco-Life-Work-History/dp/0500093776"
+  }
 ]

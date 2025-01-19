@@ -77,7 +77,7 @@
                 }
 
                 function updateExhibitions() {
-                    let exhibitionsElement = document.getElementById("faf");
+                    let exhibitionsElement = document.getElementById("main");
 
                     fetch("/exhibition.json", {method: "GET", headers: {"Accept": "application/json"}})
                     .then(response => response.json())
@@ -109,7 +109,7 @@
                 }
 
                 function updateLinks() {
-                    let linksElement = document.getElementById("faf");
+                    let linksElement = document.getElementById("main");
 
                     fetch("/links.json", {method: "GET", headers: {"Accept": "application/json"}})
                     .then(response => response.json())
@@ -121,13 +121,11 @@
         </div>
 
         <div id="admdiv">
-            <ol>
-                <a href="/api/data">Sign in</a>
-            </ol>
+
         </div>
     </aside>
 
-    <main class="main" id="faf">
+    <main class="main" id="main">
         <div id = "bio">
             <div id = "1"> 
                 <h1 class="h1">El Greco</h1>
@@ -526,12 +524,52 @@
                 </div>`];
         let ex = "Exhibitions:";
         let links = "Links:";
-        let adm = "Please log in";
+        let adm = `
+            <form action="/api/links/add" method="post" name="addLink" >
+                <label for="positionToAdd">Position: </label>
+                <input type="number" name="positionToAdd" id="positionToAdd">
+                <label for="typeToAdd">Type: </label>
+                <input type="text" name="typeToAdd" id="typeToAdd">
+                <label for="linkToAdd">Link: </label>
+                <input type="text" name="linkToAdd" id="linkToAdd">
+
+                <input type="submit" value="Add Link" />
+            </form>
+            <hr />
+
+            <form action="/api/links/delete" method="post" name="deleteLink" >
+                <label for="positionToDelete">Position of link to delete: </label>
+                <input type="number" name="positionToDelete" id="positionToDelete">
+
+                <input type="submit" value="Delete Link" />
+            </form>
+            <hr />
+
+            <form action="/api/exhibitions/add" method="post" name="addExhibition" >
+                <label for="positionToAdd">Position: </label>
+                <input type="number" name="positionToAdd" id="exhibitionpositionToAdd">
+                <label for="countryToAdd">Country: </label>
+                <input type="text" name="countryToAdd" id="countryToAdd">
+                <label for="dateToAdd">Date: </label>
+                <input type="text" name="dateToAdd" id="dateToAdd">
+                <label for="timeToAdd">Time: </label>
+                <input type="text" name="timeToAdd" id="timeToAdd">
+
+                <input type="submit" value="Add Exhibitions" />
+            </form>
+            <hr />
+
+            <form action="/api/exhibitions/delete" method="post" name="deleteExhibition" >
+                <label for="exhibitionpositionToDelete">Position of exhibition to delete: </label>
+                <input type="number" name="exhibitionpositionToDelete" id="exhibitionpositionToDelete">
+
+                <input type="submit" value="Delete Exhibition" />
+            </form>
+        `;
 
         let aside_check = [1, 0, 0, 0, 0];
         let boxes = [document.getElementById("religious"), document.getElementById("portaits"), document.getElementById("misc")];
         let paint_category = ["rel", "port", "misc"];
-        let bio_category = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
         let navlist = [document.getElementById("bionav"), document.getElementById("paintnav"),
                         document.getElementById("exnav"), document.getElementById("linknav"),
@@ -543,25 +581,13 @@
         ];
         let mainlist = [bio, paint, ex, links, adm];
         
-        for (let i = 0; i < 11; i++){
-            document.getElementById(bio_category[i]).addEventListener("click", function () {
-                document.querySelector("main").innerHTML = document.querySelector(`div[id = '${i}']`).innerHTML;
-            });
-        }
-        document.querySelector("main").innerHTML = document.querySelector(`div[id = '1']`).innerHTML;
         for (let i =1; i<5; i++){
             asidelist[i].classList.add("hidden");
         }
 
-        
-
-        
-
-        
-
         for (let i = 0; i < 5; i++) {
             navlist[i].addEventListener("click", function () {
-                if (check[i] != 1) {
+                if (aside_check[i] != 1) {
                     update();
                 }
                 aside_check[i] = 1;
@@ -597,7 +623,7 @@
         }
 
         update = function () {
-            let i = check.indexOf(1);
+            let i = aside_check.indexOf(1);
             asidelist[i].classList.add("hidden");
             aside_check[i] = 0;
         }

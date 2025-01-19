@@ -3,7 +3,7 @@ const fs = require("fs");
 const linksFile = "links.json";
 let linksJson;
 
-const exhibitionsFile = "exhibitions.json";
+const exhibitionsFile = "exhibition.json";
 let exhibitionsJson;
 
 function readExhibitionsFile() {
@@ -11,7 +11,7 @@ function readExhibitionsFile() {
 }
 
 function writeExhibitionsFile() {
-  fs.writeFileSync(exhibitionsFile, JSON.stringify(exhibitionsJson));
+  fs.writeFileSync(exhibitionsFile, JSON.stringify(exhibitionsJson, null, 2));
 }
 
 function readLinksFile() {
@@ -19,7 +19,7 @@ function readLinksFile() {
 }
 
 function writeLinksFile() {
-  fs.writeFileSync(linksFile, JSON.stringify(linksJson));
+  fs.writeFileSync(linksFile, JSON.stringify(linksJson, null, 2));
 }
 
 function addLink(typeToAdd, linkToAdd, position) {
@@ -32,12 +32,34 @@ function addLink(typeToAdd, linkToAdd, position) {
 }
 
 function addExhibition(countryToAdd, dateToAdd, timeToAdd, position) {
-  if (linksJson === undefined || linksJson === null) {
+  if (exhibitionsJson === undefined || exhibitionsJson === null) {
     console.error("Tried to modify exhibition file without reading it first!");
     return;
   }
 
-  linksJson.splice(position, 0, {"id": position, "country": countryToAdd, "date": dateToAdd, "time": timeToAdd});
+  exhibitionsJson.splice(position, 0, {"id": position, "country": countryToAdd, "date": dateToAdd, "time": timeToAdd});
 }
 
-module.exports = { readExhibitionsFile, writeExhibitionsFile, readLinksFile, writeLinksFile, addLink, addExhibition }
+function deleteLink(position) {
+  if (linksJson === undefined || linksJson === null) {
+    console.error("Tried to modify links file without reading it first!");
+    return;
+  }
+
+  linksJson.splice(position, 1);
+}
+
+function deleteExhibition(position) {
+  if (exhibitionsJson === undefined || exhibitionsJson === null) {
+    console.log("Tried to modify exhibition file without reading it first!");
+    return;
+  }
+  exhibitionsJson.splice(position, 1);
+}
+
+module.exports = { 
+  readExhibitionsFile, writeExhibitionsFile,
+  readLinksFile, writeLinksFile,
+  addLink, addExhibition,
+  deleteLink, deleteExhibition
+}
